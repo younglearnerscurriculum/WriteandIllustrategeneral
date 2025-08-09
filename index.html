@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Live Vocab • Write & Illustrate (Plurals + Comparatives + Combined Download)</title>
+<title>Live Vocab • Write & Illustrate (Plurals + Comparatives + Superlatives + Levels)</title>
 <style>
   :root{ --bg:#f6fbff; --card:#fff; --ink:#1f2a44; --muted:#6b7a90;
     --accent:#5aa6ff; --ok:#2f8f46; --warn:#c0392b; --shadow:0 8px 24px rgba(31,42,68,.12); --r:16px; }
   *{box-sizing:border-box} html,body{height:100%;margin:0}
-  body{background:var(--bg); color:var(--ink); font-family:system-ui,Segoe UI,Roboto,Arial; display:flex; flex-direction:column; align-items:center}
+  body{background:var(--bg); color:var(--ink); font-family:system-ui, Segoe UI, Roboto, Arial; display:flex; flex-direction:column; align-items:center}
   header{width:100%; max-width:1280px; text-align:center; padding:10px 12px 6px}
   header h1{margin:6px 0 0; font-size:1.2rem}
   header p{margin:2px 0 0; color:var(--muted); font-size:.95rem}
@@ -17,19 +17,21 @@
   .left,.right{padding:14px 16px} .left{border-right:2px solid #e7eef8}
   .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
   .label{font-size:.92rem; color:var(--muted)}
-  .v-in{flex:1; min-width:220px; padding:10px 12px; border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff}
-  .v-in:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
+  .v-in, .level{padding:10px 12px; border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff}
+  .v-in:focus,.level:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
   .chips{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0}
   .chip{font-size:.88rem; padding:6px 10px; border-radius:999px; border:1px solid #dbe7ff; background:#f3f8ff; color:#2a518f}
   .chip.used{background:#e8f7e9; border-color:#c7efcb; color:#236e2a}
   .chip.missing{background:#fff3f0; border-color:#ffd6cc; color:#a94220}
-  textarea{width:100%; height:62%; resize:none; padding:12px 12px 56px; line-height:1.5; border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff}
+  textarea{width:100%; height:56%; resize:none; padding:12px 12px 56px; line-height:1.5; border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff}
   textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
   .hint{color:var(--muted); font-size:.92rem; margin:6px 0}
   .controls{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px; flex-wrap:wrap}
   .btn{border:none; padding:10px 14px; border-radius:12px; font-size:.95rem; cursor:pointer; box-shadow:0 2px 8px rgba(31,42,68,.1)}
   .btn.primary{background:var(--ink); color:#fff} .btn.alt{background:#eef4ff; color:#244c8a} .btn.warn{background:#ffe4de; color:#9a2d18}
   .meter{color:var(--muted); font-size:.92rem}
+  .status{font-size:.95rem}
+  .good{color:var(--ok)} .bad{color:var(--warn)}
   .title{display:flex; align-items:center; gap:.5rem; font-size:1rem; margin-bottom:8px}
   .title .emoji{font-size:1.1rem}
   .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px}
@@ -44,7 +46,7 @@
 <body>
   <header>
     <h1>✍️ Write & 🎨 Illustrate — Live Vocabulary</h1>
-    <p>Type today’s vocabulary (comma-separated). Plurals & comparative forms count as “used.”</p>
+    <p>Type today’s vocabulary (comma-separated). Plurals, comparatives, and superlatives count as “used.”</p>
   </header>
 
   <main class="stage">
@@ -55,22 +57,30 @@
         <input id="vocabInput" class="v-in" type="text" placeholder="e.g., erosion, specimen, matrix, paleontologist, crest, happy, good">
         <button id="applyVocab" class="btn alt">Apply</button>
         <button id="clearVocab" class="btn warn">Clear</button>
+
+        <span class="label" style="margin-left:8px;">Level:</span>
+        <select id="levelSelect" class="level">
+          <option value="1">Level 1 (use 2 words; 1–3 sentences)</option>
+          <option value="2">Level 2 (use 3 words; 3–5 sentences)</option>
+          <option value="3">Level 3 (use 5 words; 5–7 sentences)</option>
+        </select>
       </div>
 
       <div id="chips" class="chips" aria-live="polite"></div>
 
       <div class="title"><span class="emoji">📝</span><strong>Write your paragraph</strong></div>
-      <p class="hint">Use the vocabulary naturally. Inflections (plurals, -ed/-ing) and comparatives (e.g., -er, more/less + adj, better/worse) count.</p>
+      <p class="hint">Use the vocabulary naturally. Inflections (plurals, -ed/-ing) and comparison forms (-er/-est, more/less/most/least + adj, best/worst) count.</p>
       <textarea id="writer" placeholder="Write your paragraph here…"></textarea>
 
       <div class="controls">
-        <div>
+        <div style="display:flex; gap:8px; align-items:center;">
           <button id="clearText" class="btn warn">Clear Text</button>
           <button id="copyText" class="btn primary">Copy Paragraph</button>
-        </div>
-        <div style="display:flex; gap:8px; align-items:center;">
           <button id="downloadBoth" class="btn alt" title="Download text + drawing as one image">Download Story + Picture</button>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
           <span id="meter" class="meter">Words used: 0 / 0</span>
+          <span id="levelStatus" class="status"></span>
         </div>
       </div>
     </section>
@@ -93,13 +103,21 @@
   <footer>© 2025 Young Learners Curriculum. All rights reserved.</footer>
 
 <script>
-  /* ---------- Live Vocabulary with plurals + comparatives ---------- */
+  /* ---------- Live Vocabulary with plurals + comparatives + superlatives ---------- */
   const vocabInput = document.getElementById('vocabInput');
   const applyVocab = document.getElementById('applyVocab');
   const clearVocab = document.getElementById('clearVocab');
   const chips = document.getElementById('chips');
   const writer = document.getElementById('writer');
   const meter = document.getElementById('meter');
+  const levelSelect = document.getElementById('levelSelect');
+  const levelStatus = document.getElementById('levelStatus');
+
+  const LEVELS = {
+    "1": { reqWords: 2, minSent: 1, maxSent: 3, label: "Level 1" },
+    "2": { reqWords: 3, minSent: 3, maxSent: 5, label: "Level 2" },
+    "3": { reqWords: 5, minSent: 5, maxSent: 7, label: "Level 3" },
+  };
 
   // Extendable irregulars
   const IRREGULAR_PLURALS = {
@@ -117,22 +135,29 @@
     foot: "feet",
     tooth: "teeth",
     man: "men",
-    woman: "women"
+    woman: "women",
+    cactus: "cacti",
+    nucleus: "nuclei",
+    fungus: "fungi"
   };
 
   const IRREGULAR_COMPARATIVES = {
-    good: ["better"],
-    well: ["better"],
-    bad: ["worse"],
-    ill: ["worse"],
+    good: ["better"], well: ["better"],
+    bad: ["worse"], ill: ["worse"],
     far: ["farther","further"],
     little: ["less"],
-    many: ["more"],
-    much: ["more"]
+    many: ["more"], much: ["more"]
+  };
+  const IRREGULAR_SUPERLATIVES = {
+    good: ["best"], well: ["best"],
+    bad: ["worst"], ill: ["worst"],
+    far: ["farthest","furthest"],
+    little: ["least"],
+    many: ["most"], much: ["most"]
   };
 
   let VOCAB = [];      // base words (lowercase)
-  let VARIANTS = {};   // word -> { tokens: Set(single-token forms), phrases: Set(phrase forms like 'more word') }
+  let VARIANTS = {};   // word -> { tokens:Set(single tokens), phrases:Set(phrases like 'more x', 'most x') }
 
   function parseVocab(text){
     return text.split(',').map(w => w.trim()).filter(Boolean).map(w => w.toLowerCase());
@@ -157,7 +182,7 @@
     return forms;
   }
 
-  // ----- Verb-ish forms (-ed/-ing and 3rd person -s/es/ies)
+  // ----- Verb-ish forms (-ed/-ing + 3rd person -s/es/ies)
   function verbForms(w){
     const forms = new Set([w]);
     // -ing
@@ -174,43 +199,44 @@
     return forms;
   }
 
-  // ----- Adjective comparatives (-er and phrases 'more/less X')
+  // ----- Adjective comparative/superlative tokens (-er/-est forms)
   function comparativeTokenForms(w){
     const forms = new Set();
-    // Irregular
     if(IRREGULAR_COMPARATIVES[w]) IRREGULAR_COMPARATIVES[w].forEach(f=>forms.add(f));
-    // Regular -er patterns
     if(/e$/.test(w)) forms.add(w + "r");
     else if(/[^aeiou]y$/.test(w)) forms.add(w.replace(/y$/,"ier"));
     else if(isCVC(w)) forms.add(w + w.slice(-1) + "er");
     else forms.add(w + "er");
     return forms;
   }
-
-  function comparativePhraseForms(w){
-    return new Set([`more ${w}`, `less ${w}`]);
+  function superlativeTokenForms(w){
+    const forms = new Set();
+    if(IRREGULAR_SUPERLATIVES[w]) IRREGULAR_SUPERLATIVES[w].forEach(f=>forms.add(f));
+    if(/e$/.test(w)) forms.add(w + "st");
+    else if(/[^aeiou]y$/.test(w)) forms.add(w.replace(/y$/,"iest"));
+    else if(isCVC(w)) forms.add(w + w.slice(-1) + "est");
+    else forms.add(w + "est");
+    return forms;
   }
+  // Phrase forms (more/less x, most/least x)
+  function comparativePhraseForms(w){ return new Set([`more ${w}`, `less ${w}`]); }
+  function superlativePhraseForms(w){ return new Set([`most ${w}`, `least ${w}`]); }
 
   function generateVariants(w){
     const tokens = new Set([w]);
     const phrases = new Set();
-
-    // plural/verb-ish
     pluralForms(w).forEach(f => tokens.add(f));
     verbForms(w).forEach(f => tokens.add(f));
-
-    // comparatives (single-token like "safer", "happier")
     comparativeTokenForms(w).forEach(f => tokens.add(f));
-    // comparatives as phrases "more/less + w"
+    superlativeTokenForms(w).forEach(f => tokens.add(f));
     comparativePhraseForms(w).forEach(p => phrases.add(p));
-
-    // also include irregular comparative tokens like "better"
-    if(IRREGULAR_COMPARATIVES[w]) IRREGULAR_COMPARATIVES[w].forEach(f=>tokens.add(f));
-
+    superlativePhraseForms(w).forEach(p => phrases.add(p));
     return { tokens, phrases };
   }
 
   function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  let USED_FLAGS = [];
 
   function buildVariants(){
     VARIANTS = {};
@@ -219,49 +245,81 @@
     });
   }
 
-  function renderChips(usedFlags=[]){
+  function renderChips(flags=[]){
     chips.innerHTML = '';
     VOCAB.forEach((w,i)=>{
       const span = document.createElement('span');
-      span.className = 'chip ' + (usedFlags[i] ? 'used' : 'missing');
+      span.className = 'chip ' + (flags[i] ? 'used' : 'missing');
       span.textContent = w;
       chips.appendChild(span);
     });
-    meter.textContent = `Words used: ${(usedFlags.filter(Boolean).length||0)} / ${VOCAB.length}`;
+    meter.textContent = `Words used: ${(flags.filter(Boolean).length||0)} / ${VOCAB.length}`;
+  }
+
+  function sentenceCount(text){
+    // count sentences with letters/numbers; split on . ! ?
+    return (text.trim()
+      .split(/[.!?]+/g)
+      .map(s => s.trim())
+      .filter(s => /[a-z0-9]/i.test(s)).length) || 0;
   }
 
   function updateUsage(){
     const text = writer.value.toLowerCase();
 
-    const used = VOCAB.map(w=>{
+    USED_FLAGS = VOCAB.map(w=>{
       const v = VARIANTS[w] || {tokens:new Set([w]), phrases:new Set()};
-      // single-token matches
-      const tokenPattern = `\\b(?:${Array.from(v.tokens).map(escapeRegex).join("|")})\\b`;
-      const tokenHit = v.tokens.size ? new RegExp(tokenPattern, 'i').test(text) : false;
-      // phrase matches (e.g., "more happy")
+      const tokenPattern = v.tokens.size ? `\\b(?:${Array.from(v.tokens).map(escapeRegex).join("|")})\\b` : '^$';
+      const tokenHit = new RegExp(tokenPattern, 'i').test(text);
       const phraseHit = Array.from(v.phrases).some(p => new RegExp(`\\b${escapeRegex(p)}\\b`, 'i').test(text));
       return tokenHit || phraseHit;
     });
 
-    renderChips(used);
+    renderChips(USED_FLAGS);
+    updateLevelStatus();
+  }
+
+  function updateLevelStatus(){
+    const level = LEVELS[levelSelect.value];
+    const usedCount = USED_FLAGS.filter(Boolean).length;
+    const sentCount = sentenceCount(writer.value);
+
+    let parts = [];
+    // Words requirement
+    if(VOCAB.length < level.reqWords){
+      parts.push(`⚠️ Add more vocab (need at least ${level.reqWords}).`);
+    } else {
+      const okWords = usedCount >= level.reqWords;
+      parts.push(okWords ? `✅ Words: ${usedCount}/${level.reqWords}` : `⚠️ Words: ${usedCount}/${level.reqWords}`);
+    }
+    // Sentences requirement
+    const okSent = sentCount >= level.minSent && sentCount <= level.maxSent;
+    parts.push(okSent ? `✅ Sentences: ${sentCount} (goal ${level.minSent}–${level.maxSent})`
+                      : `⚠️ Sentences: ${sentCount} (goal ${level.minSent}–${level.maxSent})`);
+
+    const allGood = parts.every(p => p.startsWith('✅'));
+    levelStatus.className = 'status ' + (allGood ? 'good' : 'bad');
+    levelStatus.textContent = `${level.label} — ${parts.join('  ·  ')}`;
   }
 
   applyVocab.addEventListener('click', ()=>{
     VOCAB = parseVocab(vocabInput.value);
     buildVariants();
-    renderChips(VOCAB.map(()=>false));
-    updateUsage();
+    USED_FLAGS = VOCAB.map(()=>false);
+    renderChips(USED_FLAGS);
+    updateLevelStatus();
     writer.focus();
   });
 
   clearVocab.addEventListener('click', ()=>{
     vocabInput.value = '';
-    VOCAB = []; VARIANTS = {};
+    VOCAB = []; VARIANTS = {}; USED_FLAGS = [];
     renderChips([]);
-    updateUsage();
+    updateLevelStatus();
   });
 
   writer.addEventListener('input', updateUsage);
+  levelSelect.addEventListener('change', updateLevelStatus);
 
   document.getElementById('copyText').addEventListener('click', ()=>{
     writer.select(); document.execCommand('copy');
@@ -270,7 +328,7 @@
     writer.value=''; updateUsage(); writer.focus();
   });
 
-  /* ---------- Drawing canvas + individual download ---------- */
+  /* ---------- Drawing canvas + individual & combined downloads ---------- */
   const canvas = document.getElementById('pad'), ctx = canvas.getContext('2d');
   const penBtn = document.getElementById('penBtn'), eraserBtn = document.getElementById('eraserBtn');
   const colorPicker = document.getElementById('colorPicker'), sizePicker = document.getElementById('sizePicker');
@@ -301,7 +359,7 @@
   document.getElementById('clearCanvasBtn').onclick=()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); };
   document.getElementById('downloadBtn').onclick=()=>{ const a=document.createElement('a'); a.download='drawing.png'; a.href=canvas.toDataURL('image/png'); a.click(); };
 
-  /* ---------- NEW: Combined download (story + drawing) ---------- */
+  // helper to wrap paragraph onto combined image
   function wrapTextToLines(ctx, text, maxWidth, lineHeight, font){
     ctx.font = font;
     const words = text.split(/\s+/);
@@ -317,12 +375,10 @@
   }
 
   document.getElementById('downloadBoth').onclick = ()=>{
-    // Measure DOM to keep proportions
     const stage = document.querySelector('.stage');
     const rect = stage.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
 
-    // Offscreen canvas sized to the visible stage
     const out = document.createElement('canvas');
     out.width  = Math.floor(rect.width  * dpr);
     out.height = Math.floor(rect.height * dpr);
@@ -333,66 +389,53 @@
     octx.fillStyle = '#ffffff';
     octx.fillRect(0,0,rect.width, rect.height);
 
-    // Compute left/right panel rects (match grid: 1.15fr / .85fr)
+    // Grid fractions: 1.15 / 0.85
     const totalFr = 1.15 + 0.85;
     const leftW = rect.width * (1.15/totalFr);
     const rightW = rect.width - leftW;
-    const pad = 16; // same as section padding
+    const pad = 16;
 
-    // Draw paragraph (left)
+    // LEFT: story box area
     const text = writer.value;
-    const areaX = pad, areaY = pad, areaW = leftW - pad*2, areaH = rect.height - pad*2;
+    const areaX = pad, areaY = pad, areaW = leftW - pad*2;
+    const boxTop = 140; // allow space for controls
+    const boxH = rect.height - boxTop - 70;
 
-    // Text box background
+    // Title & status
+    octx.fillStyle = '#1f2a44';
+    octx.font = 'bold 16px system-ui, Segoe UI, Arial';
+    octx.fillText('Your Story', areaX, boxTop - 18);
+
+    // Story box
     octx.fillStyle = '#fcfdff';
     octx.strokeStyle = '#dbe7ff';
     octx.lineWidth = 1.5;
-    const boxTop = 110; // approximate vertical where textarea begins
-    const boxH = rect.height - boxTop - 70;
     octx.fillRect(areaX, boxTop, areaW, boxH);
     octx.strokeRect(areaX, boxTop, areaW, boxH);
 
-    // Title
-    octx.fillStyle = '#1f2a44';
-    octx.font = 'bold 16px system-ui, Segoe UI, Arial';
-    octx.fillText('Your Story', areaX, boxTop - 12);
-
-    // Render wrapped text inside the box
+    // Render wrapped text
     const font = '15px system-ui, Segoe UI, Arial';
     const lineHeight = 22;
     octx.fillStyle = '#1f2a44';
     const lines = wrapTextToLines(octx, text, areaW - 16, lineHeight, font);
     let ty = boxTop + 16;
-    lines.forEach(ln=>{
-      octx.fillText(ln, areaX + 8, ty);
-      ty += lineHeight;
-    });
+    lines.forEach(ln=>{ octx.fillText(ln, areaX + 8, ty); ty += lineHeight; });
 
-    // Draw drawing canvas (right)
-    // Scale the user canvas to fit right panel
+    // RIGHT: drawing scaled
     const rX = leftW + pad;
     const rY = pad + 40;
     const rW = rightW - pad*2;
     const rH = rect.height - rY - pad;
-    // white bg
+
     octx.fillStyle = '#ffffff';
     octx.fillRect(rX, rY, rW, rH);
-    // compute scale to fit
-    const srcW = canvas.getBoundingClientRect().width;
-    const srcH = canvas.getBoundingClientRect().height;
+
+    const srcRect = canvas.getBoundingClientRect();
+    const srcW = srcRect.width, srcH = srcRect.height;
     const scale = Math.min(rW/srcW, rH/srcH);
     const drawW = srcW * scale, drawH = srcH * scale;
     const dx = rX + (rW - drawW)/2;
     const dy = rY + (rH - drawH)/2;
-    // draw actual bitmap at 1:1 CSS pixels
-    const temp = document.createElement('canvas');
-    temp.width = Math.floor(srcW);
-    temp.height = Math.floor(srcH);
-    const tctx = temp.getContext('2d');
-    // copy visible pixels from hi-DPI canvas to CSS-sized temp
-    const dprSrc = window.devicePixelRatio || 1;
-    tctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, temp.width*dprSrc, temp.height*dprSrc);
-    // Some browsers need a simple draw using CSS size:
     octx.drawImage(canvas, dx, dy, drawW, drawH);
 
     // Labels
@@ -400,12 +443,14 @@
     octx.font = 'bold 16px system-ui, Segoe UI, Arial';
     octx.fillText('Your Picture', rX, rY - 12);
 
-    // Download
     const a = document.createElement('a');
     a.download = 'story_and_picture.png';
     a.href = out.toDataURL('image/png');
     a.click();
   };
+
+  // init status on load
+  updateLevelStatus();
 </script>
 </body>
 </html>
