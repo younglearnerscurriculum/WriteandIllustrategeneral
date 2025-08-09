@@ -3,93 +3,64 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Live Vocab • Write & Illustrate (16:9)</title>
+<title>Live Vocab • Write & Illustrate (Plurals + Comparatives + Combined Download)</title>
 <style>
-  :root{
-    --bg:#f6fbff; --card:#fff; --ink:#1f2a44; --muted:#6b7a90;
-    --accent:#5aa6ff; --ok:#2f8f46; --warn:#c0392b;
-    --shadow:0 8px 24px rgba(31,42,68,.12); --r:16px;
-  }
+  :root{ --bg:#f6fbff; --card:#fff; --ink:#1f2a44; --muted:#6b7a90;
+    --accent:#5aa6ff; --ok:#2f8f46; --warn:#c0392b; --shadow:0 8px 24px rgba(31,42,68,.12); --r:16px; }
   *{box-sizing:border-box} html,body{height:100%;margin:0}
   body{background:var(--bg); color:var(--ink); font-family:system-ui,Segoe UI,Roboto,Arial; display:flex; flex-direction:column; align-items:center}
-
   header{width:100%; max-width:1280px; text-align:center; padding:10px 12px 6px}
   header h1{margin:6px 0 0; font-size:1.2rem}
   header p{margin:2px 0 0; color:var(--muted); font-size:.95rem}
-
-  /* 16:9 stage */
-  .stage{
-    width:100%; max-width:1280px; aspect-ratio:16/9;
-    background:var(--card); border-radius:var(--r); box-shadow:var(--shadow);
-    display:grid; grid-template-columns:1.15fr .85fr; overflow:hidden;
-  }
+  .stage{width:100%; max-width:1280px; aspect-ratio:16/9; background:var(--card); border-radius:var(--r); box-shadow:var(--shadow); display:grid; grid-template-columns:1.15fr .85fr; overflow:hidden;}
   @media (max-width:900px){ .stage{grid-template-columns:1fr; aspect-ratio:auto} }
-
-  .left,.right{padding:14px 16px}
-  .left{border-right:2px solid #e7eef8}
+  .left,.right{padding:14px 16px} .left{border-right:2px solid #e7eef8}
   .row{display:flex; gap:8px; align-items:center; flex-wrap:wrap}
   .label{font-size:.92rem; color:var(--muted)}
   .v-in{flex:1; min-width:220px; padding:10px 12px; border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff}
   .v-in:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
-
   .chips{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0}
   .chip{font-size:.88rem; padding:6px 10px; border-radius:999px; border:1px solid #dbe7ff; background:#f3f8ff; color:#2a518f}
   .chip.used{background:#e8f7e9; border-color:#c7efcb; color:#236e2a}
   .chip.missing{background:#fff3f0; border-color:#ffd6cc; color:#a94220}
-
-  textarea{
-    width:100%; height:62%;
-    resize:none; padding:12px 12px 56px; line-height:1.5;
-    border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff;
-  }
+  textarea{width:100%; height:62%; resize:none; padding:12px 12px 56px; line-height:1.5; border:1.5px solid #dbe7ff; border-radius:12px; outline:none; background:#fcfdff}
   textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
   .hint{color:var(--muted); font-size:.92rem; margin:6px 0}
-
-  .controls{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px}
+  .controls{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:8px; flex-wrap:wrap}
   .btn{border:none; padding:10px 14px; border-radius:12px; font-size:.95rem; cursor:pointer; box-shadow:0 2px 8px rgba(31,42,68,.1)}
-  .btn.primary{background:var(--ink); color:#fff}
-  .btn.alt{background:#eef4ff; color:#244c8a}
-  .btn.warn{background:#ffe4de; color:#9a2d18}
+  .btn.primary{background:var(--ink); color:#fff} .btn.alt{background:#eef4ff; color:#244c8a} .btn.warn{background:#ffe4de; color:#9a2d18}
   .meter{color:var(--muted); font-size:.92rem}
-
   .title{display:flex; align-items:center; gap:.5rem; font-size:1rem; margin-bottom:8px}
   .title .emoji{font-size:1.1rem}
-
-  /* Drawing */
   .toolbar{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:8px}
   .tool{border:1px solid #dbe7ff; background:#f7fbff; padding:8px 10px; border-radius:10px; font-size:.9rem; cursor:pointer}
   .tool.active{outline:2px solid var(--accent)}
   .tool input[type="color"]{border:none; background:transparent; width:28px; height:28px; padding:0}
   .size{width:120px}
-  canvas{
-    width:100%; height:72%;
-    border:1.5px dashed #cfe0fa; background:#fff; border-radius:12px; cursor:crosshair;
-    box-shadow:inset 0 0 0 2px #eff5ff;
-  }
-
+  canvas{width:100%; height:72%; border:1.5px dashed #cfe0fa; background:#fff; border-radius:12px; cursor:crosshair; box-shadow:inset 0 0 0 2px #eff5ff}
   footer{width:100%; max-width:1280px; text-align:center; color:var(--muted); font-size:.85rem; padding:8px 0 10px}
 </style>
 </head>
 <body>
   <header>
     <h1>✍️ Write & 🎨 Illustrate — Live Vocabulary</h1>
-    <p>Type today’s vocabulary, write a paragraph, then illustrate your scene.</p>
+    <p>Type today’s vocabulary (comma-separated). Plurals & comparative forms count as “used.”</p>
   </header>
 
   <main class="stage">
     <!-- LEFT: VOCAB + WRITE -->
     <section class="left">
       <div class="row" aria-label="Vocabulary input row">
-        <span class="label">Vocabulary (comma-separated):</span>
-        <input id="vocabInput" class="v-in" type="text" placeholder="e.g., erosion, specimen, matrix, paleontologist, crest">
-        <button id="applyVocab" class="btn alt" title="Apply words">Apply</button>
-        <button id="clearVocab" class="btn warn" title="Clear words">Clear</button>
+        <span class="label">Vocabulary:</span>
+        <input id="vocabInput" class="v-in" type="text" placeholder="e.g., erosion, specimen, matrix, paleontologist, crest, happy, good">
+        <button id="applyVocab" class="btn alt">Apply</button>
+        <button id="clearVocab" class="btn warn">Clear</button>
       </div>
 
       <div id="chips" class="chips" aria-live="polite"></div>
 
       <div class="title"><span class="emoji">📝</span><strong>Write your paragraph</strong></div>
-      <p class="hint">Use the vocabulary naturally. 5–7 sentences is great.</p>
+      <p class="hint">Use the vocabulary naturally. Inflections (plurals, -ed/-ing) and comparatives (e.g., -er, more/less + adj, better/worse) count.</p>
       <textarea id="writer" placeholder="Write your paragraph here…"></textarea>
 
       <div class="controls">
@@ -97,7 +68,10 @@
           <button id="clearText" class="btn warn">Clear Text</button>
           <button id="copyText" class="btn primary">Copy Paragraph</button>
         </div>
-        <div id="meter" class="meter">Words used: 0 / 0</div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button id="downloadBoth" class="btn alt" title="Download text + drawing as one image">Download Story + Picture</button>
+          <span id="meter" class="meter">Words used: 0 / 0</span>
+        </div>
       </div>
     </section>
 
@@ -110,7 +84,7 @@
         <label class="tool">Color <input id="colorPicker" type="color" value="#1f2a44"></label>
         <label class="tool">Size <input id="sizePicker" class="size" type="range" min="1" max="40" value="6"></label>
         <button id="clearCanvasBtn" class="tool">Clear</button>
-        <button id="downloadBtn" class="tool">Download</button>
+        <button id="downloadBtn" class="tool">Download Drawing</button>
       </div>
       <canvas id="pad" aria-label="Drawing canvas"></canvas>
     </section>
@@ -119,7 +93,7 @@
   <footer>© 2025 Young Learners Curriculum. All rights reserved.</footer>
 
 <script>
-  /* ========== Vocabulary logic (live in-class editing) ========== */
+  /* ---------- Live Vocabulary with plurals + comparatives ---------- */
   const vocabInput = document.getElementById('vocabInput');
   const applyVocab = document.getElementById('applyVocab');
   const clearVocab = document.getElementById('clearVocab');
@@ -127,34 +101,154 @@
   const writer = document.getElementById('writer');
   const meter = document.getElementById('meter');
 
-  let VOCAB = []; // filled from input
+  // Extendable irregulars
+  const IRREGULAR_PLURALS = {
+    matrix: "matrices",
+    axis: "axes",
+    crisis: "crises",
+    analysis: "analyses",
+    basis: "bases",
+    thesis: "theses",
+    phenomenon: "phenomena",
+    person: "people",
+    child: "children",
+    goose: "geese",
+    mouse: "mice",
+    foot: "feet",
+    tooth: "teeth",
+    man: "men",
+    woman: "women"
+  };
+
+  const IRREGULAR_COMPARATIVES = {
+    good: ["better"],
+    well: ["better"],
+    bad: ["worse"],
+    ill: ["worse"],
+    far: ["farther","further"],
+    little: ["less"],
+    many: ["more"],
+    much: ["more"]
+  };
+
+  let VOCAB = [];      // base words (lowercase)
+  let VARIANTS = {};   // word -> { tokens: Set(single-token forms), phrases: Set(phrase forms like 'more word') }
 
   function parseVocab(text){
-    return text.split(',')
-      .map(w => w.trim())
-      .filter(w => w.length)
-      .map(w => w.toLowerCase());
+    return text.split(',').map(w => w.trim()).filter(Boolean).map(w => w.toLowerCase());
   }
 
-  function renderChips(status=[]){
+  const isVowel = c => /[aeiou]/.test(c);
+  function isCVC(w){
+    if(w.length < 3) return false;
+    const a = w.slice(-3);
+    return !isVowel(a[0]) && isVowel(a[1]) && !isVowel(a[2]) && !/[wxy]/.test(a[2]);
+  }
+
+  // ----- Noun-ish forms (plurals, irregulars)
+  function pluralForms(w){
+    const forms = new Set([w]);
+    if(IRREGULAR_PLURALS[w]) forms.add(IRREGULAR_PLURALS[w]);
+    if(/[^aeiou]y$/.test(w)) forms.add(w.replace(/y$/, "ies"));
+    if(/(s|x|z|ch|sh)$/.test(w)) forms.add(w + "es");
+    else forms.add(w + "s");
+    if(/(?<!ef)f$/.test(w)) forms.add(w.replace(/f$/,"ves"));
+    if(/fe$/.test(w)) forms.add(w.replace(/fe$/,"ves"));
+    return forms;
+  }
+
+  // ----- Verb-ish forms (-ed/-ing and 3rd person -s/es/ies)
+  function verbForms(w){
+    const forms = new Set([w]);
+    // -ing
+    if(/e$/.test(w) && !/ee$/.test(w)) forms.add(w.replace(/e$/,"ing"));
+    else if(isCVC(w)) forms.add(w + w.slice(-1) + "ing");
+    else forms.add(w + "ing");
+    // -ed/-d
+    if(/e$/.test(w)) forms.add(w + "d");
+    else if(/[^aeiou]y$/.test(w)) forms.add(w.replace(/y$/,"ied"));
+    else if(isCVC(w)) forms.add(w + w.slice(-1) + "ed");
+    else forms.add(w + "ed");
+    // 3rd singular
+    pluralForms(w).forEach(f => forms.add(f));
+    return forms;
+  }
+
+  // ----- Adjective comparatives (-er and phrases 'more/less X')
+  function comparativeTokenForms(w){
+    const forms = new Set();
+    // Irregular
+    if(IRREGULAR_COMPARATIVES[w]) IRREGULAR_COMPARATIVES[w].forEach(f=>forms.add(f));
+    // Regular -er patterns
+    if(/e$/.test(w)) forms.add(w + "r");
+    else if(/[^aeiou]y$/.test(w)) forms.add(w.replace(/y$/,"ier"));
+    else if(isCVC(w)) forms.add(w + w.slice(-1) + "er");
+    else forms.add(w + "er");
+    return forms;
+  }
+
+  function comparativePhraseForms(w){
+    return new Set([`more ${w}`, `less ${w}`]);
+  }
+
+  function generateVariants(w){
+    const tokens = new Set([w]);
+    const phrases = new Set();
+
+    // plural/verb-ish
+    pluralForms(w).forEach(f => tokens.add(f));
+    verbForms(w).forEach(f => tokens.add(f));
+
+    // comparatives (single-token like "safer", "happier")
+    comparativeTokenForms(w).forEach(f => tokens.add(f));
+    // comparatives as phrases "more/less + w"
+    comparativePhraseForms(w).forEach(p => phrases.add(p));
+
+    // also include irregular comparative tokens like "better"
+    if(IRREGULAR_COMPARATIVES[w]) IRREGULAR_COMPARATIVES[w].forEach(f=>tokens.add(f));
+
+    return { tokens, phrases };
+  }
+
+  function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function buildVariants(){
+    VARIANTS = {};
+    VOCAB.forEach(w=>{
+      VARIANTS[w] = generateVariants(w);
+    });
+  }
+
+  function renderChips(usedFlags=[]){
     chips.innerHTML = '';
     VOCAB.forEach((w,i)=>{
       const span = document.createElement('span');
-      span.className = 'chip ' + (status[i] ? 'used' : 'missing');
+      span.className = 'chip ' + (usedFlags[i] ? 'used' : 'missing');
       span.textContent = w;
       chips.appendChild(span);
     });
-    meter.textContent = `Words used: ${(status.filter(Boolean).length||0)} / ${VOCAB.length}`;
+    meter.textContent = `Words used: ${(usedFlags.filter(Boolean).length||0)} / ${VOCAB.length}`;
   }
 
   function updateUsage(){
     const text = writer.value.toLowerCase();
-    const used = VOCAB.map(w => new RegExp(`\\b${w}\\b`, 'i').test(text));
+
+    const used = VOCAB.map(w=>{
+      const v = VARIANTS[w] || {tokens:new Set([w]), phrases:new Set()};
+      // single-token matches
+      const tokenPattern = `\\b(?:${Array.from(v.tokens).map(escapeRegex).join("|")})\\b`;
+      const tokenHit = v.tokens.size ? new RegExp(tokenPattern, 'i').test(text) : false;
+      // phrase matches (e.g., "more happy")
+      const phraseHit = Array.from(v.phrases).some(p => new RegExp(`\\b${escapeRegex(p)}\\b`, 'i').test(text));
+      return tokenHit || phraseHit;
+    });
+
     renderChips(used);
   }
 
   applyVocab.addEventListener('click', ()=>{
     VOCAB = parseVocab(vocabInput.value);
+    buildVariants();
     renderChips(VOCAB.map(()=>false));
     updateUsage();
     writer.focus();
@@ -162,28 +256,24 @@
 
   clearVocab.addEventListener('click', ()=>{
     vocabInput.value = '';
-    VOCAB = [];
+    VOCAB = []; VARIANTS = {};
     renderChips([]);
     updateUsage();
   });
 
   writer.addEventListener('input', updateUsage);
 
-  // Copy & clear text
   document.getElementById('copyText').addEventListener('click', ()=>{
     writer.select(); document.execCommand('copy');
   });
   document.getElementById('clearText').addEventListener('click', ()=>{
-    writer.value = ''; updateUsage(); writer.focus();
+    writer.value=''; updateUsage(); writer.focus();
   });
 
-  /* ========== Drawing canvas (simple pen/eraser) ========== */
-  const canvas = document.getElementById('pad');
-  const ctx = canvas.getContext('2d');
-  const penBtn = document.getElementById('penBtn');
-  const eraserBtn = document.getElementById('eraserBtn');
-  const colorPicker = document.getElementById('colorPicker');
-  const sizePicker = document.getElementById('sizePicker');
+  /* ---------- Drawing canvas + individual download ---------- */
+  const canvas = document.getElementById('pad'), ctx = canvas.getContext('2d');
+  const penBtn = document.getElementById('penBtn'), eraserBtn = document.getElementById('eraserBtn');
+  const colorPicker = document.getElementById('colorPicker'), sizePicker = document.getElementById('sizePicker');
 
   function fitCanvas(){
     const r = canvas.getBoundingClientRect();
@@ -191,46 +281,130 @@
     canvas.width = Math.floor(r.width * dpr);
     canvas.height = Math.floor(r.height * dpr);
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
   }
-  window.addEventListener('resize', fitCanvas);
-  fitCanvas();
+  window.addEventListener('resize', fitCanvas); fitCanvas();
 
   let drawing=false, erasing=false;
   function setActive(btn){ [penBtn,eraserBtn].forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
-  penBtn.onclick = ()=>{ erasing=false; setActive(penBtn); };
-  eraserBtn.onclick = ()=>{ erasing=true; setActive(eraserBtn); };
+  penBtn.onclick=()=>{ erasing=false; setActive(penBtn); };
+  eraserBtn.onclick=()=>{ erasing=true; setActive(eraserBtn); };
 
-  function pos(e){
-    const r = canvas.getBoundingClientRect();
-    const p = e.touches ? e.touches[0] : e;
-    return { x:p.clientX - r.left, y:p.clientY - r.top };
-  }
+  function pos(e){ const r=canvas.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; return {x:p.clientX-r.left, y:p.clientY-r.top}; }
   function start(e){ drawing=true; const {x,y}=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault(); }
-  function draw(e){
-    if(!drawing) return;
-    const {x,y}=pos(e);
-    ctx.lineWidth = +sizePicker.value;
-    if(erasing){ ctx.globalCompositeOperation='destination-out'; ctx.strokeStyle='rgba(0,0,0,1)'; }
-    else { ctx.globalCompositeOperation='source-over'; ctx.strokeStyle = colorPicker.value; }
-    ctx.lineTo(x,y); ctx.stroke(); e.preventDefault();
-  }
+  function draw(e){ if(!drawing) return; const {x,y}=pos(e); ctx.lineWidth=+sizePicker.value; if(erasing){ctx.globalCompositeOperation='destination-out';ctx.strokeStyle='rgba(0,0,0,1)';} else {ctx.globalCompositeOperation='source-over';ctx.strokeStyle=colorPicker.value;} ctx.lineTo(x,y); ctx.stroke(); e.preventDefault(); }
   function end(){ drawing=false; ctx.closePath(); }
+  canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', end);
+  canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', draw, {passive:false}); canvas.addEventListener('touchend', end);
 
-  canvas.addEventListener('mousedown', start);
-  canvas.addEventListener('mousemove', draw);
-  window.addEventListener('mouseup', end);
-  canvas.addEventListener('touchstart', start, {passive:false});
-  canvas.addEventListener('touchmove', draw, {passive:false});
-  canvas.addEventListener('touchend', end);
+  document.getElementById('clearCanvasBtn').onclick=()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); };
+  document.getElementById('downloadBtn').onclick=()=>{ const a=document.createElement('a'); a.download='drawing.png'; a.href=canvas.toDataURL('image/png'); a.click(); };
 
-  document.getElementById('clearCanvasBtn').onclick = ()=>{
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
-  };
-  document.getElementById('downloadBtn').onclick = ()=>{
-    const a = document.createElement('a'); a.download='drawing.png'; a.href=canvas.toDataURL('image/png'); a.click();
+  /* ---------- NEW: Combined download (story + drawing) ---------- */
+  function wrapTextToLines(ctx, text, maxWidth, lineHeight, font){
+    ctx.font = font;
+    const words = text.split(/\s+/);
+    const lines = [];
+    let line = "";
+    words.forEach(word=>{
+      const test = line ? line + " " + word : word;
+      if(ctx.measureText(test).width <= maxWidth){ line = test; }
+      else { if(line) lines.push(line); line = word; }
+    });
+    if(line) lines.push(line);
+    return lines;
+  }
+
+  document.getElementById('downloadBoth').onclick = ()=>{
+    // Measure DOM to keep proportions
+    const stage = document.querySelector('.stage');
+    const rect = stage.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+
+    // Offscreen canvas sized to the visible stage
+    const out = document.createElement('canvas');
+    out.width  = Math.floor(rect.width  * dpr);
+    out.height = Math.floor(rect.height * dpr);
+    const octx = out.getContext('2d');
+    octx.scale(dpr, dpr);
+
+    // Background
+    octx.fillStyle = '#ffffff';
+    octx.fillRect(0,0,rect.width, rect.height);
+
+    // Compute left/right panel rects (match grid: 1.15fr / .85fr)
+    const totalFr = 1.15 + 0.85;
+    const leftW = rect.width * (1.15/totalFr);
+    const rightW = rect.width - leftW;
+    const pad = 16; // same as section padding
+
+    // Draw paragraph (left)
+    const text = writer.value;
+    const areaX = pad, areaY = pad, areaW = leftW - pad*2, areaH = rect.height - pad*2;
+
+    // Text box background
+    octx.fillStyle = '#fcfdff';
+    octx.strokeStyle = '#dbe7ff';
+    octx.lineWidth = 1.5;
+    const boxTop = 110; // approximate vertical where textarea begins
+    const boxH = rect.height - boxTop - 70;
+    octx.fillRect(areaX, boxTop, areaW, boxH);
+    octx.strokeRect(areaX, boxTop, areaW, boxH);
+
+    // Title
+    octx.fillStyle = '#1f2a44';
+    octx.font = 'bold 16px system-ui, Segoe UI, Arial';
+    octx.fillText('Your Story', areaX, boxTop - 12);
+
+    // Render wrapped text inside the box
+    const font = '15px system-ui, Segoe UI, Arial';
+    const lineHeight = 22;
+    octx.fillStyle = '#1f2a44';
+    const lines = wrapTextToLines(octx, text, areaW - 16, lineHeight, font);
+    let ty = boxTop + 16;
+    lines.forEach(ln=>{
+      octx.fillText(ln, areaX + 8, ty);
+      ty += lineHeight;
+    });
+
+    // Draw drawing canvas (right)
+    // Scale the user canvas to fit right panel
+    const rX = leftW + pad;
+    const rY = pad + 40;
+    const rW = rightW - pad*2;
+    const rH = rect.height - rY - pad;
+    // white bg
+    octx.fillStyle = '#ffffff';
+    octx.fillRect(rX, rY, rW, rH);
+    // compute scale to fit
+    const srcW = canvas.getBoundingClientRect().width;
+    const srcH = canvas.getBoundingClientRect().height;
+    const scale = Math.min(rW/srcW, rH/srcH);
+    const drawW = srcW * scale, drawH = srcH * scale;
+    const dx = rX + (rW - drawW)/2;
+    const dy = rY + (rH - drawH)/2;
+    // draw actual bitmap at 1:1 CSS pixels
+    const temp = document.createElement('canvas');
+    temp.width = Math.floor(srcW);
+    temp.height = Math.floor(srcH);
+    const tctx = temp.getContext('2d');
+    // copy visible pixels from hi-DPI canvas to CSS-sized temp
+    const dprSrc = window.devicePixelRatio || 1;
+    tctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, temp.width*dprSrc, temp.height*dprSrc);
+    // Some browsers need a simple draw using CSS size:
+    octx.drawImage(canvas, dx, dy, drawW, drawH);
+
+    // Labels
+    octx.fillStyle = '#1f2a44';
+    octx.font = 'bold 16px system-ui, Segoe UI, Arial';
+    octx.fillText('Your Picture', rX, rY - 12);
+
+    // Download
+    const a = document.createElement('a');
+    a.download = 'story_and_picture.png';
+    a.href = out.toDataURL('image/png');
+    a.click();
   };
 </script>
 </body>
