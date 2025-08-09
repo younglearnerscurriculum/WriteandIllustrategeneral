@@ -16,12 +16,12 @@
        font-family:system-ui, Segoe UI, Roboto, Arial;
        display:flex; flex-direction:column; align-items:center}
 
-  /* Compact header */
+  /* Header */
   header{width:100%; max-width:1280px; text-align:center; padding:6px 10px 4px}
   header h1{margin:4px 0 0; font-size:1.05rem}
   header p{margin:2px 0 0; color:var(--muted); font-size:.82rem}
 
-  /* 16:9 stage */
+  /* Stage */
   .stage{width:100%; max-width:1280px; aspect-ratio:16/9; background:var(--card); border-radius:var(--r); box-shadow:var(--shadow); display:grid; grid-template-columns:1fr 1fr; overflow:hidden; position:relative;}
   @media (max-width:900px){ .stage{grid-template-columns:1fr; aspect-ratio:auto} }
 
@@ -31,16 +31,16 @@
   .row{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
   .label{font-size:.8rem; color:var(--muted)}
   .v-in,.level{padding:8px 10px; border:1.5px solid #dbe7ff; border-radius:10px; outline:none; background:#fcfdff; font-size:.9rem}
-  .name-in{padding:8px 10px; border:1.5px solid #dbe7ff; border-radius:999px; outline:none; background:#ffffff; font-size:.9rem; min-width:160px}
-  .name-in:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
-  .name-floating{position:absolute; top:6px; right:8px; display:flex; align-items:center; gap:6px; background:#ffffffcc; backdrop-filter:blur(4px); padding:4px 8px; border-radius:999px; border:1px solid #dbe7ff; box-shadow:0 2px 6px rgba(31,42,68,.08);}
-  .name-floating label{font-size:.8rem; color:var(--muted);} 
-  .note{color:var(--muted); font-size:.78rem;}
   .v-in:focus,.level:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
 
+  /* Name pill */
+  .name-in{padding:8px 10px; border:1.5px solid #dbe7ff; border-radius:999px; outline:none; background:#ffffff; font-size:.9rem; min-width:160px}
+  .name-in:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
+  .name-floating{position:absolute; top:6px; right:8px; display:flex; align-items:center; gap:6px; background:#ffffffcc; backdrop-filter:blur(4px); padding:4px 8px; border-radius:999px; border:1px solid #dbe7ff; box-shadow:0 2px 6px rgba(31,42,68,.08);} 
+  .name-floating label{font-size:.8rem; color:var(--muted);}
+
   .chips{display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 6px}
-  .chip{font-size:.8rem; padding:5px 9px; border-radius:999px;
-        border:1px solid #dbe7ff; background:#f3f8ff; color:#2a518f}
+  .chip{font-size:.8rem; padding:5px 9px; border-radius:999px; border:1px solid #dbe7ff; background:#f3f8ff; color:#2a518f}
   .chip.used{background:#e8f7e9; border-color:#c7efcb; color:#236e2a}
   .chip.missing{background:#fff3f0; border-color:#ffd6cc; color:#a94220}
 
@@ -49,26 +49,31 @@
 
   .hint{color:var(--muted); font-size:.78rem; margin:2px 0 6px; line-height:1.25}
   .directions{display:flex; align-items:center; justify-content:space-between; gap:8px;}
-  /* Short, non-wrapping hint text ensures fit */
 
+  /* Editor + highlight overlay */
+  .editor{position:relative}
+  /* highlight overlay removed */
+  
   textarea{
-    width:100%; height:54%;
+    width:100%; height:62%; /* taller to reduce need to scroll */
     resize:none; padding:10px 10px 44px; line-height:1.45;
-    border:1.5px solid #dbe7ff; border-radius:10px; outline:none; background:#fcfdff; font-size:.95rem;
+    border:1.5px solid #dbe7ff; border-radius:10px; outline:none;
+    background:transparent; font-size:.95rem; position:relative; z-index:2;
+    overflow:auto; /* allow if text extremely long */
+    scrollbar-width:none; -ms-overflow-style:none;
   }
+  textarea::-webkit-scrollbar{width:0;height:0}
   textarea:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(90,166,255,.15)}
 
   .controls{display:flex; justify-content:space-between; align-items:center; gap:6px; margin-top:6px; flex-wrap:wrap}
-  .btn{
-    border:none; padding:6px 10px; border-radius:10px; font-size:.82rem; cursor:pointer;
-    box-shadow:0 2px 6px rgba(31,42,68,.1)
-  }
+  .btn{border:none; padding:6px 10px; border-radius:10px; font-size:.82rem; cursor:pointer; box-shadow:0 2px 6px rgba(31,42,68,.1)}
   .btn.primary{background:var(--ink); color:#fff}
   .btn.alt{background:#eef4ff; color:#244c8a}
   .btn.warn{background:#ffe4de; color:#9a2d18}
 
   .meter{color:var(--muted); font-size:.8rem}
   .status{font-size:.82rem}
+  .status.done{background:#e8f7e9; color:#236e2a; border:1px solid #c7efcb; border-radius:10px; padding:6px 8px}
   .good{color:var(--ok)} .bad{color:var(--warn)}
 
   .toolbar{display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-bottom:6px}
@@ -77,18 +82,14 @@
   .tool input[type="color"]{border:none; background:transparent; width:26px; height:26px; padding:0}
   .size{width:110px}
 
-  canvas{
-    width:100%; height:70%;
-    border:1.5px dashed #cfe0fa; background:#fff; border-radius:10px; cursor:crosshair;
-    box-shadow:inset 0 0 0 2px #eff5ff
-  }
+  canvas{width:100%; height:70%; border:1.5px dashed #cfe0fa; background:#fff; border-radius:10px; cursor:crosshair; box-shadow:inset 0 0 0 2px #eff5ff}
 
   footer{width:100%; max-width:1280px; text-align:center; color:var(--muted); font-size:.75rem; padding:6px 0 8px}
 </style>
 </head>
 <body>
   <header>
-    <h1>✍️ Write & 🎨 Illustrate </h1>
+    <h1>✍️ Write & 🎨 Illustrate</h1>
     <p>Type today’s vocabulary. When finished, <strong>take a screenshot</strong> of this card to submit.</p>
   </header>
 
@@ -101,7 +102,6 @@
         <input id="vocabInput" class="v-in" type="text" placeholder="e.g., erosion, specimen, matrix, paleontologist, crest, happy, good">
         <button id="applyVocab" class="btn alt">Apply</button>
         <button id="clearVocab" class="btn warn">Clear</button>
-
         <span class="label" style="margin-left:6px;">Level:</span>
         <select id="levelSelect" class="level">
           <option value="1">L1: 2 words; 1–3 sents</option>
@@ -117,7 +117,9 @@
         <p class="hint">Remember to check your writing.</p>
       </div>
 
-      <textarea id="writer" placeholder="Write your paragraph here…"></textarea>
+      <div class="editor">
+        <textarea id="writer" placeholder="Write your paragraph here…"></textarea>
+      </div>
 
       <div class="controls">
         <div style="display:flex; gap:6px; align-items:center;">
@@ -149,7 +151,7 @@
   <footer>© 2025 Young Learners Curriculum. All rights reserved.</footer>
 
 <script>
-  /* === logic === */
+  // ====== DOM ======
   const vocabInput = document.getElementById('vocabInput');
   const applyVocab = document.getElementById('applyVocab');
   const clearVocab = document.getElementById('clearVocab');
@@ -160,10 +162,11 @@
   const levelStatus = document.getElementById('levelStatus');
   const nameInput = document.getElementById('nameInput');
 
+  // ====== Config ======
   const LEVELS = {
     "1": { reqWords: 2, minSent: 1, maxSent: 3, label: "Level 1" },
     "2": { reqWords: 3, minSent: 3, maxSent: 5, label: "Level 2" },
-    "3": { reqWords: 5, minSent: 5, maxSent: 7, label: "Level 3" },
+    "3": { reqWords: 5, minSent: 5, maxSent: 7, label: "Level 3" }
   };
 
   const IRREGULAR_PLURALS = {
@@ -182,8 +185,12 @@
     far:["farthest","furthest"], little:["least"], many:["most"], much:["most"]
   };
 
-  let VOCAB = []; let VARIANTS = {}; let USED_FLAGS = [];
+  // ====== State ======
+  let VOCAB = [];      // base words (lowercase)
+  let VARIANTS = {};   // word -> { tokens:Set, phrases:Set }
+  let USED_FLAGS = []; // booleans
 
+  // ====== Helpers ======
   function parseVocab(t){ return t.split(',').map(w=>w.trim()).filter(Boolean).map(w=>w.toLowerCase()); }
   const isVowel=c=>/[aeiou]/.test(c);
   function isCVC(w){ if(w.length<3) return false; const a=w.slice(-3); return !isVowel(a[0])&&isVowel(a[1])&&!isVowel(a[2])&&!/[wxy]/.test(a[2]); }
@@ -191,38 +198,32 @@
   function pluralForms(w){
     const s=new Set([w]);
     if(IRREGULAR_PLURALS[w]) s.add(IRREGULAR_PLURALS[w]);
-    if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,"ies"));
-    if(/(s|x|z|ch|sh)$/.test(w)) s.add(w+"es"); else s.add(w+"s");
-    if(/(?<!ef)f$/.test(w)) s.add(w.replace(/f$/,"ves"));
-    if(/fe$/.test(w)) s.add(w.replace(/fe$/,"ves"));
+    if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,'ies'));
+    if(/(s|x|z|ch|sh)$/.test(w)) s.add(w+'es'); else s.add(w+'s');
+    if(/(?<!ef)f$/.test(w)) s.add(w.replace(/f$/,'ves'));
+    if(/fe$/.test(w)) s.add(w.replace(/fe$/,'ves'));
     return s;
   }
   function verbForms(w){
     const s=new Set([w]);
-    if(/e$/.test(w) && !/ee$/.test(w)) s.add(w.replace(/e$/,"ing"));
-    else if(isCVC(w)) s.add(w+w.slice(-1)+"ing"); else s.add(w+"ing");
-    if(/e$/.test(w)) s.add(w+"d");
-    else if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,"ied"));
-    else if(isCVC(w)) s.add(w+w.slice(-1)+"ed"); else s.add(w+"ed");
+    if(/e$/.test(w) && !/ee$/.test(w)) s.add(w.replace(/e$/,'ing')); else if(isCVC(w)) s.add(w+w.slice(-1)+'ing'); else s.add(w+'ing');
+    if(/e$/.test(w)) s.add(w+'d'); else if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,'ied')); else if(isCVC(w)) s.add(w+w.slice(-1)+'ed'); else s.add(w+'ed');
     pluralForms(w).forEach(f=>s.add(f));
     return s;
   }
   function comparativeTokenForms(w){
     const s=new Set(); if(IRREGULAR_COMPARATIVES[w]) IRREGULAR_COMPARATIVES[w].forEach(f=>s.add(f));
-    if(/e$/.test(w)) s.add(w+"r");
-    else if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,"ier"));
-    else if(isCVC(w)) s.add(w+w.slice(-1)+"er"); else s.add(w+"er");
+    if(/e$/.test(w)) s.add(w+'r'); else if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,'ier')); else if(isCVC(w)) s.add(w+w.slice(-1)+'er'); else s.add(w+'er');
     return s;
   }
   function superlativeTokenForms(w){
     const s=new Set(); if(IRREGULAR_SUPERLATIVES[w]) IRREGULAR_SUPERLATIVES[w].forEach(f=>s.add(f));
-    if(/e$/.test(w)) s.add(w+"st");
-    else if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,"iest"));
-    else if(isCVC(w)) s.add(w+w.slice(-1)+"est"); else s.add(w+"est");
+    if(/e$/.test(w)) s.add(w+'st'); else if(/[^aeiou]y$/.test(w)) s.add(w.replace(/y$/,'iest')); else if(isCVC(w)) s.add(w+w.slice(-1)+'est'); else s.add(w+'est');
     return s;
   }
-  function comparativePhraseForms(w){ return new Set([`more ${w}`, `less ${w}`]); }
-  function superlativePhraseForms(w){ return new Set([`most ${w}`, `least ${w}`]); }
+  const comparativePhraseForms = w => new Set([`more ${w}`, `less ${w}`]);
+  const superlativePhraseForms = w => new Set([`most ${w}`, `least ${w}`]);
+
   function generateVariants(w){
     const tokens=new Set([w]); const phrases=new Set();
     pluralForms(w).forEach(f=>tokens.add(f));
@@ -238,57 +239,72 @@
   function buildVariants(){ VARIANTS={}; VOCAB.forEach(w=>VARIANTS[w]=generateVariants(w)); }
 
   function renderChips(flags=[]){
-    chips.innerHTML=''; VOCAB.forEach((w,i)=>{ const span=document.createElement('span');
-      span.className='chip '+(flags[i]?'used':'missing'); span.textContent=w; chips.appendChild(span); });
+    chips.innerHTML='';
+    VOCAB.forEach((w,i)=>{
+      const span=document.createElement('span');
+      span.className='chip '+(flags[i]?'used':'missing');
+      span.textContent=w; chips.appendChild(span);
+    });
     meter.textContent=`Words used: ${(flags.filter(Boolean).length||0)} / ${VOCAB.length}`;
   }
 
-  function sentenceCount(t){
-    return (t.trim().split(/[.!?]+/g).map(s=>s.trim()).filter(s=>/[a-z0-9]/i.test(s)).length)||0;
-  }
+  function sentenceCount(t){ return (t.trim().split(/[.!?]+/g).map(s=>s.trim()).filter(s=>/[a-z0-9]/i.test(s)).length)||0; }
 
   function updateUsage(){
-    const text=writer.value.toLowerCase();
+    const text = writer.value.toLowerCase();
     USED_FLAGS = VOCAB.map(w=>{
-      const v=VARIANTS[w]||{tokens:new Set([w]),phrases:new Set()};
-      const tokenPattern = v.tokens.size ? `\\b(?:${Array.from(v.tokens).map(escapeRegex).join("|")})\\b` : '^$';
-      const tokenHit = new RegExp(tokenPattern,'i').test(text);
-      const phraseHit = Array.from(v.phrases).some(p=>new RegExp(`\\b${escapeRegex(p)}\\b`,'i').test(text));
-      return tokenHit||phraseHit;
+      const v = VARIANTS[w] || {tokens:new Set([w]), phrases:new Set()};
+      const tokenPattern = v.tokens.size ? `\\b(?:${Array.from(v.tokens).map(escapeRegex).join('|')})\\b` : '^$';
+      const tokenHit = new RegExp(tokenPattern, 'i').test(text);
+      const phraseHit = Array.from(v.phrases).some(p => new RegExp(`\\b${escapeRegex(p)}\\b`, 'i').test(text));
+      return tokenHit || phraseHit;
     });
-    renderChips(USED_FLAGS); updateLevelStatus();
+    renderChips(USED_FLAGS);
+    updateLevelStatus();
+    
   }
 
   function updateLevelStatus(){
     const L = LEVELS[levelSelect.value];
     const used = USED_FLAGS.filter(Boolean).length;
     const sents = sentenceCount(writer.value);
-    let parts=[];
-    if(VOCAB.length < L.reqWords){ parts.push(`Add vocab: need ${L.reqWords}+`); }
-    else { parts.push((used>=L.reqWords? '✅':'⚠️')+` Words ${used}/${L.reqWords}`); }
-    parts.push((sents>=L.minSent && sents<=L.maxSent? '✅':'⚠️')+` Sents ${sents} (goal ${L.minSent}-${L.maxSent})`);
-    const ok = parts.every(p=>p.startsWith('✅'));
-    levelStatus.className='status '+(ok?'good':'bad');
-    levelStatus.textContent=`${L.label} — ${parts.join(' · ')}`;
+    const wordsOk = VOCAB.length >= L.reqWords && used >= L.reqWords;
+    const sentsOk = sents >= L.minSent && sents <= L.maxSent;
+    if (wordsOk && sentsOk) {
+      levelStatus.className = 'status done';
+      levelStatus.textContent = '🎉 Well done! You finished.';
+    } else {
+      levelStatus.className = 'status bad';
+      const parts=[];
+      parts.push(`Words ${used}/${Math.max(L.reqWords, VOCAB.length?L.reqWords:0)}`);
+      parts.push(`Sents ${sents} (goal ${L.minSent}-${L.maxSent})`);
+      levelStatus.textContent = `${L.label} — ${parts.join(' · ')}`;
+    }
   }
 
-  applyVocab.onclick=()=>{ VOCAB=parseVocab(vocabInput.value); buildVariants(); USED_FLAGS=VOCAB.map(()=>false); renderChips(USED_FLAGS); updateLevelStatus(); writer.focus(); };
-  clearVocab.onclick=()=>{ vocabInput.value=''; VOCAB=[]; VARIANTS={}; USED_FLAGS=[]; renderChips([]); updateLevelStatus(); };
-  writer.addEventListener('input', updateUsage);
-  levelSelect.addEventListener('change', updateLevelStatus);
+  // ====== Apply/Clear and listeners ======
+  applyVocab.onclick = () => { VOCAB = parseVocab(vocabInput.value); buildVariants(); USED_FLAGS = VOCAB.map(()=>false); renderChips(USED_FLAGS); updateLevelStatus(); writer.focus();  autoGrow(); };
+  clearVocab.onclick = () => { vocabInput.value=''; VOCAB=[]; VARIANTS={}; USED_FLAGS=[]; renderChips([]); updateLevelStatus();  autoGrow(); };
+  writer.addEventListener('input', ()=>{ autoGrow(); updateUsage(); });
+  levelSelect.addEventListener('change', ()=>{ updateLevelStatus();  });
+  document.getElementById('copyText').onclick = () => { writer.select(); document.execCommand('copy'); };
+  document.getElementById('clearText').onclick = () => { writer.value=''; updateUsage();  writer.focus(); autoGrow(); };
 
-  document.getElementById('copyText').onclick=()=>{ writer.select(); document.execCommand('copy'); };
-  document.getElementById('clearText').onclick=()=>{ writer.value=''; updateUsage(); writer.focus(); };
-
-  /* === drawing === */
-  const canvas=document.getElementById('pad'), ctx=canvas.getContext('2d');
-  const penBtn=document.getElementById('penBtn'), eraserBtn=document.getElementById('eraserBtn');
-  const colorPicker=document.getElementById('colorPicker'), sizePicker=document.getElementById('sizePicker');
+  // ====== Drawing ======
+  const canvas = document.getElementById('pad');
+  const ctx = canvas.getContext('2d');
+  const penBtn = document.getElementById('penBtn');
+  const eraserBtn = document.getElementById('eraserBtn');
+  const colorPicker = document.getElementById('colorPicker');
+  const sizePicker = document.getElementById('sizePicker');
 
   function fitCanvas(){
-    const r=canvas.getBoundingClientRect(); const dpr=window.devicePixelRatio||1;
-    canvas.width=Math.floor(r.width*dpr); canvas.height=Math.floor(r.height*dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.lineCap='round'; ctx.lineJoin='round';
+    const r = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(r.width * dpr);
+    canvas.height = Math.floor(r.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.lineCap='round'; ctx.lineJoin='round';
     ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
   }
   window.addEventListener('resize', fitCanvas); fitCanvas();
@@ -300,17 +316,36 @@
 
   function pos(e){ const r=canvas.getBoundingClientRect(); const p=e.touches?e.touches[0]:e; return {x:p.clientX-r.left,y:p.clientY-r.top}; }
   function start(e){ drawing=true; const {x,y}=pos(e); ctx.beginPath(); ctx.moveTo(x,y); e.preventDefault(); }
-  function draw(e){ if(!drawing) return; const {x,y}=pos(e); ctx.lineWidth=+sizePicker.value;
-    if(erasing){ ctx.globalCompositeOperation='destination-out'; ctx.strokeStyle='rgba(0,0,0,1)'; }
-    else { ctx.globalCompositeOperation='source-over'; ctx.strokeStyle=colorPicker.value; }
-    ctx.lineTo(x,y); ctx.stroke(); e.preventDefault(); }
+  function draw(e){ if(!drawing) return; const {x,y}=pos(e); ctx.lineWidth=+sizePicker.value; if(erasing){ ctx.globalCompositeOperation='destination-out'; ctx.strokeStyle='rgba(0,0,0,1)'; } else { ctx.globalCompositeOperation='source-over'; ctx.strokeStyle=colorPicker.value; } ctx.lineTo(x,y); ctx.stroke(); e.preventDefault(); }
   function end(){ drawing=false; ctx.closePath(); }
   canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', draw); window.addEventListener('mouseup', end);
   canvas.addEventListener('touchstart', start, {passive:false}); canvas.addEventListener('touchmove', draw, {passive:false}); canvas.addEventListener('touchend', end);
 
-  document.getElementById('clearCanvasBtn').onclick=()=>{ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#fff'; ctx.fillRect(0,0,canvas.width,canvas.height); };
+  document.getElementById('clearCanvasBtn').onclick = () => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='#fff';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+  };
 
-  // --- lightweight self-tests (console only) ---
+  // Auto-grow the textarea to avoid inner scrolling when possible
+  function autoGrow(){
+    const left = document.querySelector('.left');
+    const controls = document.querySelector('.controls');
+    if(!left || !controls) return;
+    const leftRect = left.getBoundingClientRect();
+    const writerRect = writer.getBoundingClientRect();
+    const controlsRect = controls.getBoundingClientRect();
+    const available = Math.max(140, (controlsRect.top - leftRect.top) - (writerRect.top - leftRect.top) - 12);
+    writer.style.height = 'auto';
+    const newH = Math.min(available, writer.scrollHeight + 6);
+    writer.style.height = newH + 'px';
+    
+  }
+  window.addEventListener('resize', autoGrow);
+  window.addEventListener('load', autoGrow);
+  setTimeout(autoGrow, 0);
+
+  // ====== Self-tests ======
   (function selfTest(){
     try{
       console.assert(typeof parseVocab==='function', 'parseVocab exists');
@@ -319,23 +354,22 @@
       const vars=generateVariants('happy');
       console.assert(vars.tokens.has('happier') && vars.tokens.has('happiest'), 'comparative/superlative tokens');
       const text='The happier child found more rocks and the best gem.';
-      // simulate usage without touching UI
       const tmpVOCAB=['happy','rock','good'];
       const tmpVAR={}; tmpVOCAB.forEach(w=>tmpVAR[w]=generateVariants(w));
-      const hit = tmpVOCAB.map(w=>{
-        const v=tmpVAR[w];
-        const re=new RegExp(`\\b(?:${Array.from(v.tokens).map(escapeRegex).join('|')})\\b`,'i');
-        return re.test(text) || Array.from(v.phrases).some(p=>new RegExp(`\\b${escapeRegex(p)}\\b`,'i').test(text));
-      });
+      const hit = tmpVOCAB.map(w=>{ const v=tmpVAR[w]; const re=new RegExp(`\\b(?:${Array.from(v.tokens).map(escapeRegex).join('|')})\\b`,'i'); return re.test(text) || Array.from(v.phrases).some(p=>new RegExp(`\\b${escapeRegex(p)}\\b`,'i').test(text)); });
       console.assert(hit.filter(Boolean).length>=2, 'at least 2 vocab detected in sample text');
+      // extra tests
+      console.assert(generateVariants('mouse').tokens.has('mice'), 'irregular plural mice');
+      console.assert(generateVariants('good').tokens.has('better'), 'irregular comparative better');
       console.log('[Live Vocab] self-test passed');
     }catch(e){ console.warn('[Live Vocab] self-test failed', e); }
   })();
 
-  // init
+  // ====== Init ======
   (function init(){
-    document.getElementById('meter').textContent='Words used: 0 / 0';
+    meter.textContent='Words used: 0 / 0';
     levelStatus.textContent='';
+    
   })();
 </script>
 </body>
